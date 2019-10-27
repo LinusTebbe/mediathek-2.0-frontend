@@ -1,0 +1,15 @@
+:root {
+    --background: #fff;
+    --card-background: #fff;
+    --btn-background:  #26a69a;
+    --text-color: #000;
+}
+
+[data-theme="dark"] {
+    --background: #121212;
+    --card-background: #1d1d1d;
+    --btn-background:  #26a69a;
+    --heading-color: #fff;
+    --text-color: #9f9f9f;
+
+}
