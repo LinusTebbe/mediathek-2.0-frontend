@@ -32,7 +32,7 @@
                 this.$auth.loginWith('password_grant', {
                     data: {
                         grant_type: 'password',
-                        client_id: 2,
+                        client_id: process.env.PASSPORT_PASSWORD_GRANT_ID,
                         client_secret: 'asdfasdfasd',
                         scope: '*',
                         username: this.email,
