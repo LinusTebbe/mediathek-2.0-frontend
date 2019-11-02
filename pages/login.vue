@@ -29,11 +29,12 @@
         },
         methods: {
             login() {
+                console.log(process.env.PASSPORT_PASSWORD_GRANT_ID);
                 this.$auth.loginWith('password_grant', {
                     data: {
                         grant_type: 'password',
-                        client_id: process.env.PASSPORT_PASSWORD_GRANT_ID.toString(),
-                        client_secret: process.env.PASSPORT_PASSWORD_GRANT_SECRET.toString(),
+                        client_id: process.env.PASSPORT_PASSWORD_GRANT_ID + "",
+                        client_secret: process.env.PASSPORT_PASSWORD_GRANT_SECRET,
                         scope: '*',
                         username: this.email,
                         password: this.password
