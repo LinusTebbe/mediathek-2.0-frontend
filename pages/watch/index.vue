@@ -59,10 +59,6 @@
             grid-template-columns: auto 30%;
             grid-column-gap: 1rem;
         }
-
-        #video {
-            object-fit: scale-down;
-        }
     }
 
     .container {
