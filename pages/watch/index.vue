@@ -53,10 +53,6 @@
 </script>
 
 <style scoped>
-    .nuxt-progress {
-        display: none !important;
-    }
-
     @media only screen and (min-width: 1200px) {
         .container {
             display: grid;
