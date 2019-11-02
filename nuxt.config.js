@@ -7,6 +7,10 @@ export default {
         '@nuxtjs/axios',
         '@nuxtjs/dotenv'
     ],
+    env: {
+        PASSPORT_PASSWORD_GRANT_ID: process.env.PASSPORT_PASSWORD_GRANT_ID,
+        PASSPORT_PASSWORD_GRANT_SECRET: process.env.PASSPORT_PASSWORD_GRANT_SECRET
+    },
     axios: {
         baseURL: process.env.LARAVEL_ENDPOINT
     },
