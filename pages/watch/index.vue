@@ -52,10 +52,13 @@
     }
 </script>
 
-<style scoped>
+<style>
     .nuxt-progress {
         display: none !important;
     }
+</style>
+
+<style scoped>
 
     @media only screen and (min-width: 1200px) {
         .container {
