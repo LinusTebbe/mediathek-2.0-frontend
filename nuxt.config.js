@@ -54,16 +54,15 @@ export default {
             offlineStrategy: 'CacheFirst',
             routingExtensions: '~/plugins/lookForVideoInCache',
             runtimeCaching: [{
-                urlPattern: 'mediathek.s3.eu-central-1.wasabisys.com/show-thumbnails',
-                handler: 'cacheFirst',
+                urlPattern: 'https://mediathek.s3.eu-central-1.wasabisys.com/show-thumbnails/.*',
+                handler: 'staleWhileRevalidate',
                 method: 'GET',
-                strategyOptions: {cacheableResponse: {statuses: [0, 200]}}
             }]
         }
     },
     plugins: [
         '~/plugins/fontawesome.js',
-        {src: '~/plugins/localStorage.js', ssr: false}
+        { src: '~/plugins/localStorage.js', ssr: false }
     ],
     buildModules: [
         '@nuxtjs/dotenv',
@@ -74,9 +73,9 @@ export default {
         locales: ['de']
     }, build: {
         extend(config, ctx) {
-          if (ctx.isDev) {
-            config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
-          }
+            if (ctx.isDev) {
+                config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
+            }
         }
     }
 };
