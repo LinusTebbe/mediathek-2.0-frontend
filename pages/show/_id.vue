@@ -31,7 +31,7 @@ export default {
   data: function() {
     return {
       showID: this.$route.params.id,
-      page: parseInt(this.$route.query.page) - 1 || 0,
+      page: parseInt(this.$route.query.page)  || 1,
       episodesPerPage: 10
     };
   },
@@ -44,11 +44,11 @@ export default {
         .where("show_id", this.showID)
         .orderBy("published_at", "desc")
         .orderBy("created_at", "desc")
-        .offset(this.episodesPerPage * this.page)
+        .offset(this.episodesPerPage * (this.page -1))
         .limit(this.episodesPerPage).get();
     },
     totalPages: function() {
-      return Math.floor(this.show.episodes.length / this.episodesPerPage);
+      return Math.floor(Epiosde.query().where("show_id", this.showID).count() / this.episodesPerPage);
     }
   },
   methods: {
