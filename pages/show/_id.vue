@@ -31,7 +31,7 @@ export default {
   data: function() {
     return {
       showID: this.$route.params.id,
-      page: parseInt(this.$route.query.page) || 1,
+      page: parseInt(this.$route.query.page) - 1 || 0,
       episodesPerPage: 10
     };
   },
