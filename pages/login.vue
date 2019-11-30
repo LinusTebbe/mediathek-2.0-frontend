@@ -56,7 +56,7 @@ export default {
     };
   },
   methods: {
-    login() {
+    async login() {
       const validationMsg = document.getElementById("email").validationMessage;
       if (validationMsg !== "") {
         this.loginError = validationMsg;
@@ -66,8 +66,8 @@ export default {
         this.loginError = "Password is requierd";
         return;
       }
-      this.$auth
-        .loginWith("password_grant", {
+      try {
+        const response = await this.$auth.loginWith("password_grant", {
           data: {
             grant_type: "password",
             client_id: process.env.PASSPORT_PASSWORD_GRANT_ID,
@@ -76,19 +76,19 @@ export default {
             username: this.email,
             password: this.password
           }
-        })
-        .then(async res => {
-          const [shows, episodes] = await Promise.all([
-            this.$axios.$get("/api/shows"),
-            this.$axios.$get("/api/episodes")
-          ]);
-          Show.create({ data: shows });
-          Episode.create({ data: episodes });
-          await this.$store.commit("updateTimestamp");
-        })
-        .catch(err => {
-          this.loginError = err.response.data.error_description;
         });
+      } catch (err) {
+        this.loginError = err.response.data.error_description;
+        return;
+      }
+
+      const [shows, episodes] = await Promise.all([
+        this.$axios.$get("/api/shows"),
+        this.$axios.$get("/api/episodes")
+      ]);
+      Show.create({ data: shows });
+      Episode.create({ data: episodes });
+      this.$router.go({name: "index"})
     }
   }
 };
