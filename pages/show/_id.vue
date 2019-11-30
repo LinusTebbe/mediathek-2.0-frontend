@@ -56,7 +56,7 @@ export default {
   },
   watch: {
     page: async function() {
-      this.$router.push({
+      this.$router.replace({
         name: "show-id",
         query: { page: this.page },
         params: { id: this.showID }
