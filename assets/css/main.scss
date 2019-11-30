@@ -39,6 +39,6 @@ button:disabled {
 }
 
 a:-webkit-any-link, a:link, a:visited {
-    text-decoration: none;
-    color: #000;
+    text-decoration: none !important;
+    color: var(--text-color);
 }
