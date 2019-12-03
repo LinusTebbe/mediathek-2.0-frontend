@@ -11,6 +11,11 @@
     </nav>
     <div class="sidebar" :class="[SidebarVisible ? 'show' : 'hide']">
       <div class="sidebar-element">
+        <div>Folgen suchen:</div>
+        <input v-model="searchTerm" />
+        <button @click="search()">Suchen</button>
+      </div>
+      <div class="sidebar-element">
         <div>Eingelogt als: {{this.$auth.user.name}}</div>
         <button @click="logout()">Logout</button>
       </div>
@@ -24,6 +29,7 @@ export default {
   name: "default",
   data: function() {
     return {
+      searchTerm: "",
       SidebarVisible: false
     };
   },
@@ -37,6 +43,9 @@ export default {
     logout: async function() {
       await this.$auth.logout();
       this.$router.go({ name: "login" });
+    },
+    search : function () {
+      this.$router.push({ name: "search", query: { s: this.searchTerm } });
     }
   },
   async mounted() {
@@ -46,6 +55,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@media only screen and (min-width: 992px) {
+  .sidebar {
+    width: 20%;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .sidebar {
+    width: 35%;
+  }
+}
 nav {
   display: grid;
   align-items: center;
@@ -76,7 +96,6 @@ nav {
   z-index: 5;
   padding: 1rem;
   height: 100vh;
-  width: 20vw;
 }
 .sidebar.show {
   left: 0px;
@@ -89,10 +108,17 @@ nav {
 
 .sidebar-element {
   div {
-    margin: .5rem 0;
+    margin: 0.2rem 0;
+  }
+  input {
+    margin: 0.2rem 0;
+    width: 100%;
+    box-sizing: border-box;
   }
   button {
     width: 100%;
   }
+  padding: 0.5rem 0;
+  border-bottom: 1px solid black;
 }
 </style>
