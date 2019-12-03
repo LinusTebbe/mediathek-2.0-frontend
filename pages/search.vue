@@ -13,7 +13,7 @@
     <div>
       <div v-for="result of results" :key="result.title">
         <h2>{{result.title}}</h2>
-        <div class="card-container">
+        <div class="card-container side-scroller">
           <Episode-card v-for="episode in result.episodes" :episode="episode" :key="episode.id" />
         </div>
       </div>
@@ -79,18 +79,5 @@ input {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-}
-.card-container {
-  .card {
-    min-width: 30%;
-    margin: 1rem;
-    margin-bottom: auto;
-    height: auto;
-  }
-  height: 100%;
-  display: flex;
-  align-items: stretch;
-  scroll-snap-type: x mandatory;
-  overflow-x: scroll;
 }
 </style>
