@@ -7,9 +7,9 @@
       <span class="title">
         <b>Mediathek</b>.alieris.de
       </span>
-      <font-awesome-icon @click="SidebarVisible = !SidebarVisible" icon="bars" />
+      <font-awesome-icon style="cursor: pointer" @click="SidebarVisible = !SidebarVisible" icon="bars" />
     </nav>
-    <div class="sidebar" :class="[SidebarVisible ? 'show' : 'hide']">
+    <div class="sidebar" v-bind:class="{ show: SidebarVisible   }">
       <div class="sidebar-element">
         <div>Folgen suchen:</div>
         <input v-model="searchTerm" />
@@ -55,17 +55,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@media only screen and (min-width: 992px) {
-  .sidebar {
-    width: 20%;
-  }
-}
-
-@media only screen and (max-width: 992px) {
-  .sidebar {
-    width: 35%;
-  }
-}
 nav {
   display: grid;
   align-items: center;
@@ -89,20 +78,18 @@ nav {
 }
 
 .sidebar {
+  width: 25rem;
   position: fixed;
   top: 3rem;
-  left: -300px;
+  left: -26rem;
   background: white;
   z-index: 5;
   padding: 1rem;
   height: 100vh;
-}
-.sidebar.show {
-  left: 0px;
   transition: all 0.5s;
 }
-.sidebar.hide {
-  left: -300px;
+.sidebar.show {
+  left: 0;
   transition: all 0.5s;
 }
 
