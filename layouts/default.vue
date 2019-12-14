@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import Episode from "~/models/Episode";
+
 export default {
   name: "default",
   data: function() {
@@ -51,7 +53,9 @@ export default {
     }
   },
   async mounted() {
-    this.$store.commit("updateData");
+    const episodes = await this.$axios.get("api/episodes?lastUpdated=" + this.$store.getters.timestamp);
+    Episode.insert({data: episodes.data});
+    this.$store.commit("updateTimestamp");
   }
 };
 </script>

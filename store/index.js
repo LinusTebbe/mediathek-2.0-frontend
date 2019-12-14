@@ -18,18 +18,23 @@ import Show from "~/models/Show";
 import Episode from "~/models/Episode";
 
 export const actions = {
-    async nuxtServerInit(store, {$auth, $axios}) {
+    async nuxtServerInit(store, { $auth, $axios }) {
         if ($auth.loggedIn) {
-            Show.create({data: await this.$axios.$get('/api/shows')});
-            Episode.create({data: await this.$axios.$get('/api/episodes')});
-            store.state.lastUpdated = Math.floor(Date.now() / 1000);
+            Show.create({ data: await this.$axios.$get('/api/shows') });
+            Episode.create({ data: await this.$axios.$get('/api/episodes') });
+            this.$store.commit("updateTimestamp");
         }
     }
 };
 
-
-export const mutations  = {
-    updateTimestamp (state) {
+export const mutations = {
+    updateTimestamp: (state) => {
         state.lastUpdated = Math.floor(Date.now() / 1000);
     }
 }
+
+export const getters = {
+    lastUpdated: state => {
+        return state.lastUpdated;
+    }
+};

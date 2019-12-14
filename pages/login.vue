@@ -88,7 +88,8 @@ export default {
       ]);
       Show.create({ data: shows });
       Episode.create({ data: episodes });
-      this.$router.go({name: "index"})
+      this.$store.commit("updateTimestamp");
+      this.$router.go({ name: "index" });
     }
   }
 };
