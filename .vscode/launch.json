@@ -28,11 +28,13 @@
             "name": "api: laravel",
             "request": "launch",
             "port": 8000,
-            "program": "C:/Users/Niklas Limberg/PhpstormProjects/mediathek-2.0/backend/artisan", // Could be any other shell command
+            "preLaunchTask": "Kill PHP Server",
+            "program": "C:/Users/Niklas Limberg/PhpstormProjects/mediathek-2.0-backend/artisan", // Could be any other shell command
             "args": [
                 "serve"
             ],
-            "cwd": "C:/Users/Niklas Limberg/PhpstormProjects/mediathek-2.0/backend"
+            "postDebugTask": "Kill PHP Server", 
+            "cwd": "C:/Users/Niklas Limberg/PhpstormProjects/mediathek-2.0-backend"
         }
     ],
     "compounds": [
