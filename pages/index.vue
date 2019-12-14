@@ -35,7 +35,7 @@
     }
 
     @media only screen and (max-width: 992px) {
-        .shows {
+        .card {
             margin: .5rem;
         }
     }
