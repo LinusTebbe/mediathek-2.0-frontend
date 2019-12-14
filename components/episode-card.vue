@@ -4,7 +4,7 @@
         <div class="card-body">{{ episode.description }}</div>
         <div class="card-footerContainer">
             <div class="card-footer">
-                <div>{{ formatDate(episode.published_at ) }}</div>
+                <div class="secondary-text">{{ formatDate(episode.published_at ) }}</div>
                 <div class="progressContainer">
                     <div class="progress">
                         <div class="determinate"
@@ -12,7 +12,7 @@
                         </div>
                     </div>
                 </div>
-                <span class="episode-length">{{ formatSec(episode.duration) }}</span>
+                <span class="episode-length secondary-text">{{ formatSec(episode.duration) }}</span>
                 <div class="button-area">
                     <nuxt-link :to="'/watch?w='+ episode.id">
                         <button>Watch</button>

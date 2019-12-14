@@ -45,6 +45,7 @@ export default {
     },
     css: [
         '@/assets/css/colors.css',
+        '@/assets/css/text-sizes.css',
         '@/assets/css/main.scss',
         '@fortawesome/fontawesome-svg-core/styles.css',
     ],
