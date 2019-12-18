@@ -53,9 +53,26 @@ export default {
     }
   },
   async mounted() {
-    const episodes = await this.$axios.get("api/episodes?lastUpdated=" + this.$store.getters.timestamp);
-    Episode.insert({data: episodes.data});
+    console.log(this.$store.state.lastUpdated);
+    const episodes = await this.$axios.get(
+      "api/episodes?lastUpdated=" + this.$store.state.lastUpdated
+    );
+    Episode.insert({ data: episodes.data });
     this.$store.commit("updateTimestamp");
+
+    try {
+      Episode.query().where("newProgress", 1).get().forEach(episode => {
+          this.$axios.put(`/api/episodes/${episode.videoId}/viewing_progress`, {
+            progress: episode.progress
+          });
+          Episode.update({
+            where: episode.videoId,
+            data: { newProgress: false }
+          });
+        });
+    } catch (error) {
+      console.error("could not sync viewing progress: " + error)
+    }
   }
 };
 </script>
