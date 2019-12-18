@@ -39,7 +39,7 @@ button:disabled {
 }
 
 a a:-webkit-any-link, a:link, a:visited {
-    text-decoration: none !important;
+    text-decoration: none none none 0 !important;
     color: var(--text-color);
 }
 
