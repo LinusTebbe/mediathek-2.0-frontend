@@ -39,7 +39,10 @@ button:disabled {
 }
 
 a a:-webkit-any-link, a:link, a:visited {
-    text-decoration: none none none 0 !important;
+    text-decoration-line: none !important;
+    text-decoration-color: none !important;
+    text-decoration-style:none !important;
+    text-decoration-thickness: 0px !important; 
     color: var(--text-color);
 }
 
