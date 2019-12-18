@@ -21,7 +21,7 @@
         "@vuex-orm/plugin-search": "^0.24.1",
         "axios": "^0.19.0",
         "node-sass": "^4.13.0",
-        "npm": "^6.13.1",
+        "npm": "^6.13.4",
         "nuxt": "^2.9.2",
         "nuxt-fontawesome": "^0.4.0",
         "sass-loader": "^8.0.0",
