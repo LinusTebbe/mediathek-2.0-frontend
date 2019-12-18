@@ -4,6 +4,10 @@ import database from '~/database'
 
 VuexORM.use(VuexORMSearch);
 
+export const state = () => ({
+    lastUpdated: 0
+});
+
 export const plugins = [
     VuexORM.install(database)
 ];
@@ -27,7 +31,7 @@ export const mutations = {
 }
 
 export const getters = {
-    lastUpdated: state => {
+    lastUpdated: (state) => {
         return state.lastUpdated;
     }
 };
