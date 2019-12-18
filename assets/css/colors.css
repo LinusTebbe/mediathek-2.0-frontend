@@ -3,6 +3,8 @@
     --card-background: #fff;
     --btn-background:  #26a69a;
     --text-color: #000;
+    --text-secondry-color: #f6ffff;
+    --nav-background-color: #1f2b3d;
 }
 
 [data-theme="dark"] {
@@ -11,5 +13,6 @@
     --btn-background:  #26a69a;
     --heading-color: #fff;
     --text-color: #9f9f9f;
-
+    --text-secondry-color: #f6ffff;
+    --nav-background-color: #1f2b3d;
 }
