@@ -11,7 +11,8 @@ export default class Show extends Model {
             title: this.attr(''),
             description: this.attr(''),
             channel: this.attr(''),
-            wantsPushNotifications: this.boolean(false),
+            isSubscribed: this.boolean(false),
+            synced: this.boolean(true),
             episodes: this.hasMany(Episode, 'show_id')
         }
     }

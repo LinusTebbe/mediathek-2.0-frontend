@@ -6,8 +6,8 @@
           <div class="btn-container">
             <button
               @click="subscribe"
-              :class="[show.wantsPushNotifications ? 'Unsubscribe' : '']"
-            >{{show.wantsPushNotifications ? "Subscribe" : "Unsubscribe"}}</button>
+              :class="[show.isSubscribed ? 'Unsubscribe' : '']"
+            >{{show.isSubscribed ? "Unsubscribe" : "Subscribe"}}</button>
           </div>
         </Show-card>
       </div>
@@ -52,7 +52,24 @@ export default {
     }
   },
   methods: {
-    subscribe: function() {}
+    subscribe: async function() {
+      const state = !this.show.isSubscribed;
+      try {
+        const response = await this.$axios.put(`/api/shows/subscribe`, {
+            isSubscribed: state,
+            show_id: this.showID
+        });
+        Show.update({
+          where: this.showID,
+          data: { isSubscribed: state, synced: true }
+        });
+      } catch (e) {
+        Show.update({
+          where: this.showID,
+          data: { isSubscribed: state, synced: false }
+        });
+      }
+    }
   },
   watch: {
     page: async function() {
