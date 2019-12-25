@@ -66,12 +66,15 @@ export default {
           "api/getUpdates?lastUpdated=" + (lastUpdated - 180)
         );
         Episode.insert({ data: update.data.episodes });
-        
+
         Show.update({
           where: show => show.isSubscribed,
           data: { isSubscribed: false }
         });
-        Show.update({where: update.data.sucribtions, data: {isSubscribed: true}})
+        Show.update({
+          where: update.data.sucribtions,
+          data: { isSubscribed: true }
+        });
 
         Show.insert({ data: update.data.shows });
         this.$store.commit("updateTimestamp");
@@ -79,14 +82,27 @@ export default {
         Episode.query().where("newProgress", 1).get().forEach(episode => {
             this.$axios.put(`/api/episodes/${episode.videoId}/viewing_progress`, {
                 progress: episode.progress
-              });
-            Episode.update({
-              where: episode.videoId,
-              data: { newProgress: false }
-            });
+              }).then(() =>
+                Episode.update({
+                  where: episode.videoId,
+                  data: { newProgress: false }
+                })
+              );
+          });
+        Show.query().where("synced", false).get().forEach(show => {
+            this.$axios.put(`/api/shows/${show.id}/subscribe`, {
+                isSubscribed: show.isSubscribed,
+                show_id: show.id
+              })
+              .then(() =>
+                Show.update({
+                  where: show.id,
+                  data: { synced: true }
+                })
+              );
           });
       } catch (error) {
-        console.error("could not sync viewing progress: " + error);
+        console.error("could not sync offline data: " + error);
       }
     });
   }
