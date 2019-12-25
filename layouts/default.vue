@@ -101,7 +101,7 @@ nav {
   .left-icon {
     margin-left: 5px;
     cursor: pointer;
-    height: 1.5rem;
+    height: 1.8rem;
   }
   .title {
     margin-left: 5px;
@@ -109,8 +109,8 @@ nav {
   .right-icon {
     cursor: pointer;
     margin-left: auto;
-    padding-left: 5px;
-    height: 1.5rem;
+    padding-right: 5px;
+    height: 1.8rem;
   }
 
   align-items: center;
