@@ -28,7 +28,7 @@
 
 <script>
 import Episode from "~/models/Episode";
-import { async } from "q";
+import Show from "~/models/Show";
 
 export default {
   name: "default",
@@ -55,16 +55,25 @@ export default {
   },
   async mounted() {
     window.requestIdleCallback(async () => {
-      const lastUpdated = this.$store.getters.lastUpdated
-      const timeSinceLastUpdate =  Math.floor(Date.now() / 1000) - lastUpdated;
+      const lastUpdated = this.$store.getters.lastUpdated;
+      const timeSinceLastUpdate = Math.floor(Date.now() / 1000) - lastUpdated;
       if (timeSinceLastUpdate < 60) {
         console.info(`last update was ${timeSinceLastUpdate}sec ago`);
         return 0;
       }
-      try { 
-        const episodes = await this.$axios.get("api/episodes?lastUpdated=" + lastUpdated);
-        Episode.insert({ data: episodes.data });
+      try {
+        const update = await this.$axios.get(
+          "api/getUpdates?lastUpdated=" + (lastUpdated - 180)
+        );
+        Episode.insert({ data: update.data.episodes });
+        
+        Show.update({
+          where: show => show.isSubscribed,
+          data: { isSubscribed: false }
+        });
+        Show.update({where: update.data.sucribtions, data: {isSubscribed: true}})
 
+        Show.insert({ data: update.data.shows });
         this.$store.commit("updateTimestamp");
 
         Episode.query().where("newProgress", 1).get().forEach(episode => {
