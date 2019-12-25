@@ -1,27 +1,17 @@
 <template>
   <div>
     <nav>
-      <font-awesome-icon class="back-icon" v-if="canGoBack" @click="back()" icon="arrow-left" />
+      <font-awesome-icon class="left-icon" v-if="canGoBack" @click="back()" icon="arrow-left" />
+      <font-awesome-icon class="left-icon" v-else @click="search()" icon="search"/>
       <span class="title">
         <b>Mediathek</b>.alieris.de
       </span>
       <font-awesome-icon
-        class="sidebar-toggle"
-        @click="SidebarVisible = !SidebarVisible"
-        icon="bars"
+        class="right-icon"
+        @click="logout()"
+        icon="sign-out-alt"
       />
     </nav>
-    <div class="sidebar" v-bind:class="{ show: SidebarVisible   }">
-      <div class="sidebar-element">
-        <div>Folgen suchen:</div>
-        <input v-model="searchTerm" />
-        <button @click="search()">Suchen</button>
-      </div>
-      <div class="sidebar-element">
-        <div>Eingelogt als: {{this.$auth.user.name}}</div>
-        <button @click="logout()">Logout</button>
-      </div>
-    </div>
     <nuxt />
   </div>
 </template>
@@ -32,12 +22,6 @@ import Show from "~/models/Show";
 
 export default {
   name: "default",
-  data: function() {
-    return {
-      searchTerm: "",
-      SidebarVisible: false
-    };
-  },
   computed: {
     canGoBack: function() {
       return this.$route.name !== "index";
@@ -50,7 +34,7 @@ export default {
       this.$router.go({ name: "login" });
     },
     search: function() {
-      this.$router.push({ name: "search", query: { s: this.searchTerm } });
+      this.$router.push({ name: "search" });
     }
   },
   async mounted() {
@@ -77,7 +61,6 @@ export default {
         });
 
         Show.insert({ data: update.data.shows });
-        this.$store.commit("updateTimestamp");
 
         Episode.query().where("newProgress", 1).get().forEach(episode => {
             this.$axios.put(`/api/episodes/${episode.videoId}/viewing_progress`, {
@@ -101,6 +84,9 @@ export default {
                 })
               );
           });
+
+        this.$store.commit("updateTimestamp");
+
       } catch (error) {
         console.error("could not sync offline data: " + error);
       }
@@ -111,18 +97,20 @@ export default {
 
 <style scoped lang="scss">
 nav {
-  .back-icon {
+  display: flex;
+  .left-icon {
     margin-left: 5px;
     cursor: pointer;
+    height: 1.5rem;
   }
   .title {
     margin-left: 5px;
   }
-  .sidebar-toggle {
+  .right-icon {
     cursor: pointer;
-    position: absolute;
-    top: 13px;
-    right: 5px;
+    margin-left: auto;
+    padding-left: 5px;
+    height: 1.5rem;
   }
 
   align-items: center;
@@ -135,38 +123,5 @@ nav {
   background: var(--nav-background-color);
   color: var(--text-secondry-color);
   font-size: 2rem;
-}
-
-.sidebar {
-  width: 25rem;
-  position: fixed;
-  top: 54px;
-  left: -25rem;
-  background: white;
-  z-index: 5;
-  padding: 1rem;
-  height: 100vh;
-  transition: all 0.5s;
-  box-sizing: border-box;
-}
-.sidebar.show {
-  left: 0;
-  transition: all 0.5s;
-}
-
-.sidebar-element {
-  div {
-    margin: 0.2rem 0;
-  }
-  input {
-    margin: 0.2rem 0;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  button {
-    width: 100%;
-  }
-  padding: 0.5rem 0;
-  border-bottom: 1px solid black;
 }
 </style>
