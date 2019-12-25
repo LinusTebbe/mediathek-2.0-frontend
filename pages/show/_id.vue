@@ -13,7 +13,7 @@
       </div>
       <Episode-card v-for="episode in episodes" :episode="episode" :key="episode.id" />
     </div>
-    <Pagination :current-page="page" :totalPages="totalPages" v-on:changePage="page = $event"></Pagination>
+    <Pagination v-if="totalPages !== 0" :current-page="page" :totalPages="totalPages" v-on:changePage="page = $event"></Pagination>
   </div>
 </template>
 
@@ -55,7 +55,7 @@ export default {
     subscribe: async function() {
       const state = !this.show.isSubscribed;
       try {
-        const response = await this.$axios.put(`/api/shows/subscribe`, {
+        const response = await this.$axios.put(`/api/shows/${this.showID}/subscribe`, {
             isSubscribed: state,
             show_id: this.showID
         });
