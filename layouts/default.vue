@@ -4,7 +4,7 @@
       <font-awesome-icon class="left-icon" v-if="canGoBack" @click="back()" icon="arrow-left" />
       <font-awesome-icon class="left-icon" v-else @click="search()" icon="search"/>
       <span class="title">
-        <b>Mediathek</b>.alieris.de
+        mediathek.alieris.dev
       </span>
       <font-awesome-icon
         class="right-icon"
