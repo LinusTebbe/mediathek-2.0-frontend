@@ -15,7 +15,7 @@ export default class Episode extends Model {
             size: this.number(0),
             duration: this.number(0),
             progress: this.number(0),
-            newProgress: this.number(0),
+            synced: this.boolean(true),
             published_at: this.number(0),
             video_path: this.string(''),
             thumbnail_path: this.string(''),

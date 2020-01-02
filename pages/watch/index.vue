@@ -50,12 +50,12 @@ export default {
         });
         Episode.update({
           where: this.videoId,
-          data: { progress: this.progress, newProgress: false }
+          data: { progress: this.progress, synced: true }
         });
       } catch (e) {
         Episode.update({
           where: this.videoId,
-          data: { progress: this.progress, newProgress: true }
+          data: { progress: this.progress, synced: false }
         });
       }
     }
