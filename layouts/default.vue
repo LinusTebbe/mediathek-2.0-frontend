@@ -46,29 +46,13 @@ export default {
         return 0;
       }
       try {
-        const update = await this.$axios.get(
-          "api/getUpdates?lastUpdated=" + (lastUpdated - 180)
-        );
-        Episode.insert({ data: update.data.episodes });
-
-        Show.update({
-          where: show => show.isSubscribed,
-          data: { isSubscribed: false }
-        });
-        Show.update({
-          where: update.data.sucribtions,
-          data: { isSubscribed: true }
-        });
-
-        Show.insert({ data: update.data.shows });
-
-        Episode.query().where("newProgress", 1).get().forEach(episode => {
-            this.$axios.put(`/api/episodes/${episode.videoId}/viewing_progress`, {
+        Episode.query().where("synced", false).get().forEach(episode => {
+            this.$axios.put(`/api/episodes/${episode.id}/viewing_progress`, {
                 progress: episode.progress
               }).then(() =>
                 Episode.update({
-                  where: episode.videoId,
-                  data: { newProgress: false }
+                  where: episode.id,
+                  data: { synced: true }
                 })
               );
           });
@@ -84,6 +68,22 @@ export default {
                 })
               );
           });
+
+        const update = await this.$axios.get(
+          "api/getUpdates?lastUpdated=" + (lastUpdated - 180)
+        );
+        Episode.insert({ data: update.data.episodes });
+
+        Show.update({
+          where: show => show.isSubscribed,
+          data: { isSubscribed: false }
+        });
+        Show.update({
+          where: update.data.sucribtions,
+          data: { isSubscribed: true }
+        });
+
+        Show.insert({ data: update.data.shows });
 
         this.$store.commit("updateTimestamp");
 
