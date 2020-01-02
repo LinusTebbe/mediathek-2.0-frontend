@@ -4,14 +4,14 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "client: chrome",
+            "name": "Chrome",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}",
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "server: nuxt",
+            "name": "Nuxt",
             "args": ["dev"],
             "osx": {
               "program": "${workspaceFolder}/node_modules/.bin/nuxt"
@@ -22,29 +22,6 @@
             "windows": {
               "program": "${workspaceFolder}/node_modules/nuxt/bin/nuxt.js"
             }
-        },
-        {
-            "type": "php",
-            "name": "api: laravel",
-            "request": "launch",
-            "port": 8000,
-            "preLaunchTask": "Kill PHP Server",
-            "program": "C:/Users/Niklas Limberg/PhpstormProjects/mediathek-2.0-backend/artisan", // Could be any other shell command
-            "args": [
-                "serve"
-            ],
-            "postDebugTask": "Kill PHP Server", 
-            "cwd": "C:/Users/Niklas Limberg/PhpstormProjects/mediathek-2.0-backend"
-        }
-    ],
-    "compounds": [
-        {
-            "name": "fullstack: nuxt",
-            "configurations": [
-                "api: laravel",
-                "server: nuxt",
-                "client: chrome"
-            ]
         }
     ]
 }
