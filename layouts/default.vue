@@ -79,7 +79,7 @@ export default {
           data: { isSubscribed: false }
         });
         Show.update({
-          where: update.data.sucribtions,
+          where: show => update.data.sucribtions.includes(show.id),
           data: { isSubscribed: true }
         });
 
