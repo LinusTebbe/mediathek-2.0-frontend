@@ -2,15 +2,9 @@
   <div>
     <nav>
       <font-awesome-icon class="left-icon" v-if="canGoBack" @click="back()" icon="arrow-left" />
-      <font-awesome-icon class="left-icon" v-else @click="search()" icon="search"/>
-      <span class="title">
-        mediathek.alieris.dev
-      </span>
-      <font-awesome-icon
-        class="right-icon"
-        @click="logout()"
-        icon="sign-out-alt"
-      />
+      <font-awesome-icon class="left-icon" v-else @click="search()" icon="search" />
+      <span class="title">mediathek.alieris.dev</span>
+      <font-awesome-icon class="right-icon" @click="logout()" icon="sign-out-alt" />
     </nav>
     <nuxt />
   </div>
@@ -74,19 +68,18 @@ export default {
         );
         Episode.insert({ data: update.data.episodes });
 
+        Show.insert({ data: update.data.shows });
+
         Show.update({
           where: show => show.isSubscribed,
           data: { isSubscribed: false }
         });
         Show.update({
-          where: show => update.data.sucribtions.includes(show.id),
+          where: show => update.data.subscriptions.includes(show.id),
           data: { isSubscribed: true }
         });
 
-        Show.insert({ data: update.data.shows });
-
         this.$store.commit("updateTimestamp");
-
       } catch (error) {
         console.error("could not sync offline data: " + error);
       }
