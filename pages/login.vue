@@ -96,6 +96,25 @@ export default {
 </script>
 
 <style scoped>
+@media (max-width: 960px) { 
+  .form-container {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    width: 75vw;
+  } 
+}
+
+@media (min-width: 960px) { 
+  .form-container {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    width: 25vw;
+  } 
+}
+
+
 .center {
   display: flex;
   align-items: center;
@@ -112,12 +131,7 @@ h3 {
   color: var(--btn-background);
 }
 
-.form-container {
-  background: white;
-  padding: 40px;
-  border-radius: 8px;
-  width: 25vw;
-}
+
 
 .form-group {
   display: flex;

@@ -2,7 +2,6 @@
   <div>
     <nav>
       <font-awesome-icon class="left-icon" v-if="canGoBack" @click="back()" icon="arrow-left" />
-      <font-awesome-icon class="left-icon" v-else @click="search()" icon="search" />
       <span class="title">mediathek.alieris.dev</span>
       <font-awesome-icon class="right-icon" @click="logout()" icon="sign-out-alt" />
     </nav>
@@ -40,18 +39,27 @@ export default {
         return 0;
       }
       try {
-        Episode.query().where("synced", false).get().forEach(episode => {
-            this.$axios.put(`/api/episodes/${episode.id}/viewing_progress`, {
+        Episode.query()
+          .where("synced", false)
+          .get()
+          .forEach(episode => {
+            this.$axios
+              .put(`/api/episodes/${episode.id}/viewing_progress`, {
                 progress: episode.progress
-              }).then(() =>
+              })
+              .then(() =>
                 Episode.update({
                   where: episode.id,
                   data: { synced: true }
                 })
               );
           });
-        Show.query().where("synced", false).get().forEach(show => {
-            this.$axios.put(`/api/shows/${show.id}/subscribe`, {
+        Show.query()
+          .where("synced", false)
+          .get()
+          .forEach(show => {
+            this.$axios
+              .put(`/api/shows/${show.id}/subscribe`, {
                 isSubscribed: show.isSubscribed,
                 show_id: show.id
               })

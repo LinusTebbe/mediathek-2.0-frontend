@@ -125,7 +125,7 @@
 
     .progress {
         width: 100%;
-        background-color: #acece6;
+        background-color: var(--progress-background);
         height: 4px;
         border-radius: 2px;
         margin: .1rem 0 .5rem 0;

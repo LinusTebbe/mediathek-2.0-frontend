@@ -1,18 +1,23 @@
-:root {
+@media (prefers-color-scheme: no-preference), (prefers-color-scheme: light) {
+    :root {
     --background: #fff;
     --card-background: #fff;
     --btn-background:  #26a69a;
     --text-color: #000;
     --text-secondry-color: #f6ffff;
     --nav-background-color: #1f2b3d;
+    --progress-background:#acece6;
 }
-
-[data-theme="dark"] {
-    --background: #121212;
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+    --background: #000;
     --card-background: #1d1d1d;
-    --btn-background:  #26a69a;
+    --btn-background:  #10312f;
     --heading-color: #fff;
     --text-color: #9f9f9f;
     --text-secondry-color: #f6ffff;
-    --nav-background-color: #1f2b3d;
+    --nav-background-color: #030404;
+    --progress-background: #202928;
+}
 }
