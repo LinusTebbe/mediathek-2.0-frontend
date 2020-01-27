@@ -4,10 +4,16 @@
       <div class="showCol">
         <Show-card :show="show">
           <div class="btn-container">
-            <button
+            <select v-model="episodeType" class="type-select">
+              <option value="all">Alle Episoden</option>
+              <option value="downlaoded">Heruntergeladene Episoden</option>
+            </select>
+            <button class="btn-left"
               @click="subscribe"
               :class="[show.isSubscribed ? 'Unsubscribe' : '']"
-            >{{show.isSubscribed ? "Unsubscribe" : "Subscribe"}}</button>
+            >
+              {{show.isSubscribed ? "Unsubscribe" : "Subscribe"}}
+            </button>
           </div>
         </Show-card>
       </div>
@@ -30,6 +36,7 @@ export default {
   components: { Pagination, ShowCard, EpisodeCard },
   data: function() {
     return {
+      episodeType: "all",
       showID: this.$route.params.id,
       page: parseInt(this.$route.query.page)  || 1,
       episodesPerPage: 10
@@ -42,13 +49,24 @@ export default {
     episodes: function() {
       return Epiosde.query()
         .where("show_id", this.showID)
+        .where((episode)=> {
+          if(this.episodeType == "downlaoded") {
+            return episode.is_downloaded;
+          }
+          return true;
+        })
         .orderBy("published_at", "desc")
         .orderBy("created_at", "desc")
         .offset(this.episodesPerPage * (this.page -1))
         .limit(this.episodesPerPage).get();
     },
     totalPages: function() {
-      return Math.floor(Epiosde.query().where("show_id", this.showID).count() / this.episodesPerPage);
+      return Math.floor(Epiosde.query().where("show_id", this.showID).where((episode)=> {
+          if(this.episodeType == "downlaoded") {
+            return episode.is_downloaded;
+          }
+          return true;
+        }).count() / this.episodesPerPage);
     }
   },
   methods: {
@@ -126,10 +144,24 @@ export default {
 }
 
 .btn-container {
-  button {
+  .btn-left {
     position: absolute;
     bottom: 1rem;
     right: 1rem;
+  }
+  .type-select {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    border-radius:  4px;
+    padding: 7px 14px;
+    background: var(--background-color);
+    border-color: var(--nav-background-color);
+    color: var(--text-secondry-color);
+    option {
+      background-color: white;
+      color: #000;
+    }
   }
 
   min-height: 3rem;
