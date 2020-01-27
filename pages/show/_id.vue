@@ -19,11 +19,12 @@
       <Episode-card v-for="episode in episodes" :episode="episode" :key="episode.id" />
     </div>
     <Pagination
-      v-if="totalPages !== 0"
       :current-page="page"
       :totalPages="totalPages"
       v-on:changePage="page = $event"
-    ></Pagination>
+    >
+      <span>Keine Episoden gefunden</span>
+    </Pagination>
   </div>
 </template>
 
@@ -52,22 +53,20 @@ export default {
     },
     episodesOfShow: function() {
       return Epiosde.query()
-        .where("show_id", this.showID)
-        .orderBy("published_at", "desc")
-        .orderBy("created_at", "desc")
-        .get();
-    },
-    episodes: function() {
-      return this.episodesOfShow
-        .filter(episode => {
+        .where("show_id", this.showID).where(episode => {
           if (this.episodeType == "downlaoded") {
             return episode.is_downloaded;
           }
           return true;
         })
-        .slice(
+        .orderBy("published_at", "desc")
+        .orderBy("created_at", "desc")
+        .get();
+    },
+    episodes: function() {
+      return this.episodesOfShow.slice(
           (this.page - 1) * this.episodesPerPage,
-          this.page  * this.episodesPerPage
+          this.page * this.episodesPerPage
         );
     },
     totalPages: function() {
