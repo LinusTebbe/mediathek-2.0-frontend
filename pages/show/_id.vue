@@ -8,18 +8,22 @@
               <option value="all">Alle Episoden</option>
               <option value="downlaoded">Heruntergeladene Episoden</option>
             </select>
-            <button class="btn-left"
+            <button
+              class="btn-left"
               @click="subscribe"
               :class="[show.isSubscribed ? 'Unsubscribe' : '']"
-            >
-              {{show.isSubscribed ? "Unsubscribe" : "Subscribe"}}
-            </button>
+            >{{show.isSubscribed ? "Unsubscribe" : "Subscribe"}}</button>
           </div>
         </Show-card>
       </div>
       <Episode-card v-for="episode in episodes" :episode="episode" :key="episode.id" />
     </div>
-    <Pagination v-if="totalPages !== 0" :current-page="page" :totalPages="totalPages" v-on:changePage="page = $event"></Pagination>
+    <Pagination
+      v-if="totalPages !== 0"
+      :current-page="page"
+      :totalPages="totalPages"
+      v-on:changePage="page = $event"
+    ></Pagination>
   </div>
 </template>
 
@@ -38,7 +42,7 @@ export default {
     return {
       episodeType: "all",
       showID: this.$route.params.id,
-      page: parseInt(this.$route.query.page)  || 1,
+      page: parseInt(this.$route.query.page) || 1,
       episodesPerPage: 10
     };
   },
@@ -46,37 +50,41 @@ export default {
     show: function() {
       return Show.find(this.showID);
     },
-    episodes: function() {
+    episodesOfShow: function() {
       return Epiosde.query()
         .where("show_id", this.showID)
-        .where((episode)=> {
-          if(this.episodeType == "downlaoded") {
+        .orderBy("published_at", "desc")
+        .orderBy("created_at", "desc")
+        .get();
+    },
+    episodes: function() {
+      return this.episodesOfShow
+        .filter(episode => {
+          if (this.episodeType == "downlaoded") {
             return episode.is_downloaded;
           }
           return true;
         })
-        .orderBy("published_at", "desc")
-        .orderBy("created_at", "desc")
-        .offset(this.episodesPerPage * (this.page -1))
-        .limit(this.episodesPerPage).get();
+        .slice(
+          (this.page - 1) * this.episodesPerPage,
+          this.page  * this.episodesPerPage
+        );
     },
     totalPages: function() {
-      return Math.floor(Epiosde.query().where("show_id", this.showID).where((episode)=> {
-          if(this.episodeType == "downlaoded") {
-            return episode.is_downloaded;
-          }
-          return true;
-        }).count() / this.episodesPerPage);
+      return Math.floor(this.episodesOfShow.length / this.episodesPerPage);
     }
   },
   methods: {
     subscribe: async function() {
       const state = !this.show.isSubscribed;
       try {
-        const response = await this.$axios.put(`/api/shows/${this.showID}/subscribe`, {
+        const response = await this.$axios.put(
+          `/api/shows/${this.showID}/subscribe`,
+          {
             isSubscribed: state,
             show_id: this.showID
-        });
+          }
+        );
         Show.update({
           where: this.showID,
           data: { isSubscribed: state, synced: true }
@@ -153,7 +161,7 @@ export default {
     position: absolute;
     bottom: 1rem;
     left: 1rem;
-    border-radius:  4px;
+    border-radius: 4px;
     padding: 7px 14px;
     background: var(--background-color);
     border-color: var(--nav-background-color);

@@ -3,8 +3,9 @@
         <button :disabled="currentPage === 1" @click="changePage(currentPage - 1)">
             <font-awesome-icon icon="chevron-left"/>
         </button>
-        <button v-for="button in buttons" @click="changePage(button)"
-                :class="{active: button === currentPage}">{{button}}
+        <button v-for="(button, index) in buttons" @click="changePage(button)"
+                :class="{active: button === currentPage}"
+                :key="index">{{button}}
         </button>
         <button :disabled="currentPage === totalPages" @click="changePage(currentPage + 1)">
             <font-awesome-icon icon="chevron-right"/>
