@@ -31,7 +31,6 @@ export default {
                         method: 'post',
                         propertyName: 'access_token'
                     },
-                    logout: false,
                     user: {
                         url: '/api/user',
                         method: 'get',

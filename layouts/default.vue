@@ -24,7 +24,7 @@ export default {
     back: () => window.history.back(),
     logout: async function() {
       await this.$auth.logout();
-      this.$router.go({ name: "login" });
+      window.location = "/login"
     },
     search: function() {
       this.$router.push({ name: "search" });
