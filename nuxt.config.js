@@ -53,16 +53,17 @@ export default {
         workbox: {
             offline: true,
             offlineStrategy: 'CacheFirst',
-            routingExtensions: '~/plugins/lookForVideoInCache',
             runtimeCaching: [{
                 urlPattern: 'https://mediathek.s3.eu-central-1.wasabisys.com/show-thumbnails/.*',
                 handler: 'staleWhileRevalidate',
                 method: 'GET',
-            }]
+            }],
+            workboxExtensions: '@/plugins/lookForVideoInCache.js',
         }
     },
     plugins: [
         '~/plugins/fontawesome.js',
+        '~/plugins/vue-async-computed.js',
         { src: '~/plugins/localStorage.js', ssr: false }
     ],
     buildModules: [

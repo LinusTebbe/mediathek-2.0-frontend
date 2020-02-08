@@ -165,4 +165,8 @@ label {
   padding: 0;
   border: 0;
 }
+
+input {
+  padding: 0 6px;
+}
 </style>

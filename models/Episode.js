@@ -10,7 +10,6 @@ export default class Episode extends Model {
             show_id: this.attr(null),
             title: this.string(''),
             description: this.string(''),
-            is_downloaded: this.boolean(false),
             wasDownloadedOn: this.number(0),
             size: this.number(0),
             duration: this.number(0),

@@ -1,6 +1,9 @@
 workbox.routing.registerRoute(
-    /mediathek.s3.eu-central-1.wasabisys.com/,
+    /.*\.mp4/,
     new workbox.strategies.CacheFirst({
-        cacheName: 'video',
+      cacheName: 'video',
+      plugins: [
+        new workbox.rangeRequests.Plugin(),
+      ],
     })
 );

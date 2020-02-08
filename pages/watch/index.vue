@@ -6,7 +6,7 @@
       @timeupdate="progress = Math.floor($event.target.currentTime)"
       controls
     >
-      <source :src="episode.video_path +'#t='+ episode.progress || 1 " type="video/mp4" />
+      <source crossOrigin="anonymous" :src="episode.video_path +'#t='+ episode.progress || 1 " type="video/mp4" />
     </video>
     <div class="card">
       <div class="card-text">
