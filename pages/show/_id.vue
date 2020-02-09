@@ -70,7 +70,7 @@ export default {
         );
     },
     totalPages: function() {
-      return Math.floor(this.episodesOfShow.length / this.episodesPerPage);
+      return Math.ceil(this.episodesOfShow.length / this.episodesPerPage);
     }
   },
   methods: {
