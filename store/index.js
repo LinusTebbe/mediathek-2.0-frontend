@@ -1,8 +1,5 @@
-import VuexORMSearch from '@vuex-orm/plugin-search'
 import VuexORM from '@vuex-orm/core'
 import database from '~/database'
-
-VuexORM.use(VuexORMSearch);
 
 export const state = () => ({
     lastUpdated: 0
