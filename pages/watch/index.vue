@@ -3,10 +3,10 @@
     <video
       id="video"
       :poster="episode.thumbnail_path"
-      @timeupdate="progress = Math.floor($event.target.currentTime)"
+      @timeupdate="progress = Math.floor($event.target.currentTime)" crossOrigin="anonymous"
       controls
     >
-      <source crossOrigin="anonymous" :src="episode.video_path +'#t='+ episode.progress || 1 " type="video/mp4" />
+      <source  :src="episode.video_path +'#t='+ episode.progress || 1 " type="video/mp4" />
     </video>
     <div class="card">
       <div class="card-text">
