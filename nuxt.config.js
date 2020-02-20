@@ -56,8 +56,7 @@ export default {
                 urlPattern: 'https://mediathek.s3.eu-central-1.wasabisys.com/show-thumbnails/.*',
                 handler: 'staleWhileRevalidate',
                 method: 'GET',
-            }],
-            workboxExtensions: '@/plugins/lookForVideoInCache.js',
+            }]
         }
     },
     plugins: [

@@ -3,11 +3,10 @@
     <video
       id="video"
       :poster="episode.thumbnail_path"
-      @timeupdate="progress = Math.floor($event.target.currentTime)" crossOrigin="anonymous"
+      @timeupdate="progress = Math.floor($event.target.currentTime)"
+      crossOrigin="anonymous"
       controls
-    >
-      <source  :src="episode.video_path +'#t='+ episode.progress || 1 " type="video/mp4" />
-    </video>
+    ></video>
     <div class="card">
       <div class="card-text">
         <div class="card-title">{{ episode.title }}</div>
@@ -33,6 +32,7 @@ export default {
   data: function() {
     return {
       videoId: this.$route.query.w,
+      blobURL: undefined,
       progress: 0
     };
   },
@@ -42,12 +42,27 @@ export default {
       return Episode.find(this.videoId);
     }
   },
+  mounted: function() {
+    this.$nextTick(async function() {
+      if (process.client) {
+        const response = await caches.match(this.episode.video_path);
+        document.getElementById("video").src =
+          (response === undefined
+            ? this.episode.video_path
+            : URL.createObjectURL(await response.blob())) +
+          `#t=${this.episode.progress || 1}`;
+      }
+    });
+  },
   watch: {
     async progress() {
       try {
-        await this.$axios.put(`/api/episodes/${this.videoId}/viewing_progress`, {
+        await this.$axios.put(
+          `/api/episodes/${this.videoId}/viewing_progress`,
+          {
             progress: this.progress
-        });
+          }
+        );
         Episode.update({
           where: this.videoId,
           data: { progress: this.progress, synced: true }
