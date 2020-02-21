@@ -32,7 +32,7 @@ export default {
   data: function() {
     return {
       videoId: this.$route.query.w,
-      blobURL: undefined,
+      lastUpdate: undefined,
       progress: 0
     };
   },
@@ -42,38 +42,46 @@ export default {
       return Episode.find(this.videoId);
     }
   },
+  methods: {
+    updateDB(progress, timeout) {
+      const videoId = this.videoId;
+
+      function updateVuex(progress, synced) {
+        Episode.update({
+          where: videoId,
+          data: { progress, synced }
+        });
+      }
+
+      this.$axios.put(`/api/episodes/${this.videoId}/viewing_progress`,
+          { progress },
+          { timeout: timeout || 0 }
+        ).then(() => updateVuex(progress, true))
+        .catch(err => updateVuex(progress, false));
+    }
+  },
   mounted: function() {
     this.$nextTick(async function() {
-      if (process.client) {
-        const response = await caches.match(this.episode.video_path);
-        document.getElementById("video").src =
-          (response === undefined
-            ? this.episode.video_path
-            : URL.createObjectURL(await response.blob())) +
-          `#t=${this.episode.progress || 1}`;
-      }
+      this.lastUpdate = this.episode.progress || 1;
+      const response = await caches.match(this.episode.video_path);
+      document.getElementById("video").src =
+        (response === undefined
+          ? this.episode.video_path
+          : URL.createObjectURL(await response.blob())) +
+        `#t=${this.episode.progress || 1}`;
     });
   },
   watch: {
-    async progress() {
-      try {
-        await this.$axios.put(
-          `/api/episodes/${this.videoId}/viewing_progress`,
-          {
-            progress: this.progress
-          }
-        );
-        Episode.update({
-          where: this.videoId,
-          data: { progress: this.progress, synced: true }
-        });
-      } catch (e) {
-        Episode.update({
-          where: this.videoId,
-          data: { progress: this.progress, synced: false }
-        });
+    progress(progress) {
+      if (Math.abs(this.lastUpdate - progress) > 10) {
+        this.lastUpdate = progress;
+        this.updateDB(progress);
       }
     }
+  },
+  destroyed() {
+    document.getElementById("video").pause();
+    this.updateDB(this.progress, 100);
   },
   validate({ query }) {
     return Episode.find(query.w) !== null;
