@@ -12,11 +12,17 @@
               class="btn-left"
               @click="subscribe"
               :class="[show.isSubscribed ? 'Unsubscribe' : '']"
-            >{{show.isSubscribed ? "Unsubscribe" : "Subscribe"}}</button>
+            >
+              {{ show.isSubscribed ? "Unsubscribe" : "Subscribe" }}
+            </button>
           </div>
         </Show-card>
       </div>
-      <Episode-card v-for="episode in episodes" :episode="episode" :key="episode.id" />
+      <Episode-card
+        v-for="episode in episodes"
+        :episode="episode"
+        :key="episode.id"
+      />
     </div>
     <Pagination
       :current-page="page"
@@ -44,33 +50,34 @@ export default {
       episodeType: "all",
       showID: this.$route.params.id,
       page: parseInt(this.$route.query.page) || 1,
-      episodesPerPage: 10
+      episodesPerPage: 10,
+      totalPages: 0
     };
   },
   computed: {
     show: function() {
       return Show.find(this.showID);
-    },
-    episodesOfShow: function() {
-      return Epiosde.query()
-        .where("show_id", this.showID).where(episode => {
-          if (this.episodeType == "downlaoded") {
-            return episode.is_downloaded;
-          }
-          return true;
-        })
+    }
+  },
+  asyncComputed: {
+    episodes: async function() {
+      let episodes = Epiosde.query()
+        .where("show_id", this.showID)
         .orderBy("published_at", "desc")
         .orderBy("created_at", "desc")
         .get();
-    },
-    episodes: function() {
-      return this.episodesOfShow.slice(
+
+        if(this.episodeType === "downlaoded") {
+          const downloaded = await Promise.all(episodes.map(async episode => (await caches.match(episode.video_path)) !== undefined))
+          episodes = episodes.filter((episodes, index) => downloaded[index]);
+        }
+
+        this.totalPages = Math.ceil(episodes.length / this.episodesPerPage);
+
+        return episodes.slice(
           (this.page - 1) * this.episodesPerPage,
           this.page * this.episodesPerPage
         );
-    },
-    totalPages: function() {
-      return Math.ceil(this.episodesOfShow.length / this.episodesPerPage);
     }
   },
   methods: {
