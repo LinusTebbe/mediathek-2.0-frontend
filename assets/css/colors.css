@@ -5,6 +5,7 @@
     --btn-background:  #26a69a;
     --text-color: #000;
     --text-secondry-color: #f6ffff;
+    --text-tertiary-color: #000;
     --nav-background-color: #1f2b3d;
     --progress-background:#acece6;
 }
@@ -17,6 +18,7 @@
     --heading-color: #fff;
     --text-color: #9f9f9f;
     --text-secondry-color: #f6ffff;
+    --text-tertiary-color: #f6ffff;
     --nav-background-color: #030404;
     --progress-background: #202928;
 }

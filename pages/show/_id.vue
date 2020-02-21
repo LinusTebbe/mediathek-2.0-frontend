@@ -164,7 +164,7 @@ export default {
     padding: 7px 14px;
     background: var(--background-color);
     border-color: var(--nav-background-color);
-    color: var(--text-secondry-color);
+    color: var(--text-tertiary-color);
     option {
       background-color: white;
       color: #000;
