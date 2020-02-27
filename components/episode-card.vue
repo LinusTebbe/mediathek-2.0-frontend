@@ -16,7 +16,7 @@
         <span class="episode-length secondary-text">{{
           formatSec(episode.duration)
         }}</span>
-        <div class="button-area">
+        <div class="button-area" :disabled="$nuxt.isOffline && !episode.isDownloaded">
           <nuxt-link :to="'/watch?w=' + episode.id">
             <button>Watch</button>
           </nuxt-link>
@@ -27,6 +27,7 @@
             @click="startDownload"
             v-else-if="!is_downloaded"
             key="download"
+            class="startDownload"
           >
             <font-awesome-icon icon="download" />
           </button>
@@ -128,7 +129,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .card {
   padding: 1rem;
   box-sizing: border-box;
@@ -168,12 +169,17 @@ export default {
 }
 
 .button-area {
+  button {
+    margin: 0 0.1rem;
+  }
   display: flex;
   justify-content: center;
 }
 
-.button-area button {
-  margin: 0 0.1rem;
+.button-area[disabled] > button, .button-area[disabled] > a > button {
+   background: #6c7373;
+    cursor:not-allowed;
+  
 }
 
 .episode-length {

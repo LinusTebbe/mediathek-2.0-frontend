@@ -67,9 +67,10 @@ export default {
         .orderBy("created_at", "desc")
         .get();
 
+        const downloaded = await Promise.all(episodes.map(async episode => (await caches.match(episode.video_path)) !== undefined))
+        episodes = episodes.map((episode, index) => {return {...episode, isDownloaded: downloaded[index]}});
         if(this.episodeType === "downlaoded") {
-          const downloaded = await Promise.all(episodes.map(async episode => (await caches.match(episode.video_path)) !== undefined))
-          episodes = episodes.filter((episodes, index) => downloaded[index]);
+          episodes = episodes.filter(episode => episode.isDownloaded);
         }
 
         this.totalPages = Math.ceil(episodes.length / this.episodesPerPage);
