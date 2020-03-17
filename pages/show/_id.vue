@@ -60,28 +60,33 @@ export default {
     }
   },
   asyncComputed: {
-    episodes: async function() {
-      let episodes = Epiosde.query()
-        .where("show_id", this.showID)
-        .orderBy("published_at", "desc")
-        .orderBy("created_at", "desc")
-        .get();
+    episodes: {
+      get() {
+        if (process.client) {
+          return new Promise(async resolve => {
+            let episodes = Epiosde.query()
+              .where("show_id", this.showID)
+              .orderBy("published_at", "desc")
+              .orderBy("created_at", "desc")
+              .get();
 
-        const downloaded = await Promise.all(episodes.map(async episode => (await caches.match(episode.video_path)) !== undefined))
-        episodes = episodes.map((episode, index) => {return {...episode, isDownloaded: downloaded[index]}});
-        console.log(episodes);
-        if(this.episodeType === "downlaoded") {
-          console.log("aaa")
-          episodes = episodes.filter(episode => episode.isDownloaded);
+            const downloaded = await Promise.all(episodes.map(async episode =>(await caches.match(episode.video_path)) !== undefined));
+            episodes = episodes.map((episode, index) => {return { ...episode, isDownloaded: downloaded[index] }});
+            if (this.episodeType === "downlaoded") {
+              episodes = episodes.filter(episode => episode.isDownloaded);
+            }
+            this.totalPages = Math.ceil(episodes.length / this.episodesPerPage);
+
+            return resolve(
+              episodes.slice(
+                (this.page - 1) * this.episodesPerPage,
+                this.page * this.episodesPerPage
+              )
+            );
+          });
         }
-        console.log(episodes);
-
-        this.totalPages = Math.ceil(episodes.length / this.episodesPerPage);
-
-        return episodes.slice(
-          (this.page - 1) * this.episodesPerPage,
-          this.page * this.episodesPerPage
-        );
+      },
+      watch: ["episodeType", "page"]
     }
   },
   methods: {
